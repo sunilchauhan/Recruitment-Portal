@@ -1,0 +1,530 @@
+{% include "header.html" %}
+{% load get_all_users %}
+<html>
+<head>
+
+<link rel="stylesheet" href="{{MEDIA_URL}}/style.css" type="text/css">
+<script type="text/javascript" src="{{MEDIA_URL}}/jquery.js"></script>
+<link rel="stylesheet" href="{{MEDIA_URL}}/themes/base/jquery.ui.all.css">
+<script src="{{MEDIA_URL}}/ui/jquery.ui.core.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.widget.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.tabs.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.datepicker.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.dialog.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.effects.core.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.button.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.draggable.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.position.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.resizable.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.mouse.js"></script>
+<script src="{{MEDIA_URL}}/external/jquery.bgiframe-2.1.2.js"></script>
+<script type="text/javascript" language="javascript" src="{{MEDIA_URL}}/js/jquery.dataTables.js"></script>
+<link rel="stylesheet" href="{{MEDIA_URL}}/demo_page.css" type="text/css">
+<link rel="stylesheet" href="{{MEDIA_URL}}/demo_table.css" type="text/css">
+
+<script type='text/javascript' src='{{MEDIA_URL}}/autocomplete_lib/jquery.bgiframe.min.js'></script>
+<script type='text/javascript' src='{{MEDIA_URL}}/autocomplete_lib/jquery.ajaxQueue.js'></script>
+<script type='text/javascript' src='{{MEDIA_URL}}/autocomplete_lib/thickbox-compressed.js'></script>
+<script type='text/javascript' src='{{MEDIA_URL}}/autocomplete_lib/jquery.autocomplete.js'></script>
+<link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}/autocomplete_lib/jquery.autocomplete.css" />
+<link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}/autocomplete_lib/thickbox.css" />
+
+<script type="text/javascript">
+function ClearForm(){
+    document.candidate_details_form.reset();
+}
+</script>
+
+
+
+<!---------------------------------------------------->
+<script type='text/javascript'>
+var previous_email = '';
+var in_ajax = 0;
+function checkEmail() {
+    email = $("#email_address").val();
+    if ((previous_email != email) && (email != '') && (in_ajax != 1)) {
+        in_ajax = 1;
+        $("#email_status").html("<img src='/media/busy.gif' />");
+        $("#email_status").load('/recruit/check_email/', {email: email}, function() { $("input[id$='email_address']").focus();in_ajax=0});
+    }
+    previous_email = email;
+}
+
+$(function() {
+    setInterval("checkEmail()", 1000);
+});
+</script>
+
+<script type='text/javascript'>
+var previous_contact_number = '';
+var in_ajax = 0;
+function checkContact() {
+    contact_number = $("#contact_number").val();
+    if ((previous_contact_number != contact_number) && (contact_number != '') && (in_ajax != 1)) {
+        in_ajax = 1;
+        $("#contact_number_status").html("<img src='/media/busy.gif' />");
+        $("#contact_number_status").load('/recruit/check_contact_number/', {contact_number: contact_number}, function() { $("input[id$='contact_number']").focus();in_ajax=0});
+    }
+    previous_contact_number = contact_number;
+}
+
+$(function() {
+    setInterval("checkContact()", 1000);
+});
+</script>
+
+<script type='text/javascript'>
+var previous_passport_number = '';
+var in_ajax = 0;
+function checkPassport() {
+    passport_number = $("#passport_number").val();
+    if ((previous_passport_number != passport_number) && (passport_number != '') && (in_ajax != 1)) {
+        in_ajax = 1;
+        $("#passport_number_status").html("<img src='/media/busy.gif' />");
+        $("#passport_number_status").load('/recruit/check_passport_number/', {passport_number: passport_number}, function() { $("input[id$='passport_number']").focus();in_ajax=0});
+    }
+    previous_passport_number = passport_number;
+}
+
+$(function() {
+    setInterval("checkPassport()", 1000);
+});
+</script>
+
+
+<script>
+$(document).ready(function(){
+$('#other_qual').hide();
+$('#highest_qualification').change(function() {
+       if($("#highest_qualification").val() == 'other') 
+       {
+       	$('#other_qual').show();
+       }
+       else
+       {
+       $('#other_qual').hide();
+       }
+});
+});
+</script>
+
+<!---
+<script>
+
+$(document).ready(function(){
+$('#emp_info').hide();
+$('#reference').change(function() {
+       if($("#reference").val() == 'Employee Reference') 
+       {
+       	$('#emp_info').show();
+       	$('#referral_name').hide();
+       }
+       else
+       {
+       $('#emp_info').hide();
+      $('#referral_name').show();
+       }
+});
+});
+</script>--->
+<script>
+$(document).ready(function(){
+$("#hr_id").prop("disabled", true);
+
+$("#referral_id").focus(function(){
+$.getJSON('/recruit/check_referral/',null,function(referral){
+$("#referral_id").autocomplete(referral);
+});
+});	
+
+$("#interviewer1").focus(function(){
+$.getJSON('/recruit/all_users/',null,function(all_users){
+$("#interviewer1").autocomplete(all_users);
+});
+});
+
+$("#interviewer2").focus(function(){
+$.getJSON('/recruit/all_users/',null,function(all_users){
+$("#interviewer2").autocomplete(all_users);
+});
+});
+
+$("#interviewer3").focus(function(){
+$.getJSON('/recruit/all_users/',null,function(all_users){
+$("#interviewer3").autocomplete(all_users);
+});
+});
+
+$("#interviewer4").focus(function(){
+$.getJSON('/recruit/all_users/',null,function(all_users){
+$("#interviewer4").autocomplete(all_users);
+});
+});
+
+});
+</script>
+
+
+
+<!-------------------Form Validation------------------------------->
+<script type="text/javascript">
+function validateCandidateForm()
+{
+var first_name=document.forms["candidate_details_form"]["first_name"].value;
+var last_name=document.forms["candidate_details_form"]["last_name"].value;
+var contact_number=document.forms["candidate_details_form"]["contact_number"].value;
+var email_address=document.forms["candidate_details_form"]["email_address"].value;
+var passport_number=document.forms["candidate_details_form"]["passport_number"].value;
+var address=document.forms["candidate_details_form"]["address"].value;
+var referral_name=document.forms["candidate_details_form"]["referral_name"].value;   
+var experience_yrs=document.forms["candidate_details_form"]["experience_yrs"].value;
+var experience_mnths=document.forms["candidate_details_form"]["experience_mnths"].value;
+var current_ctc=document.forms["candidate_details_form"]["current_ctc"].value;
+var expected_ctc=document.forms["candidate_details_form"]["expected_ctc"].value; 
+var institute_name=document.forms["candidate_details_form"]["institute_name"].value;
+var year_of_passing=document.forms["candidate_details_form"]["year_of_passing"].value;
+var percentage=document.forms["candidate_details_form"]["percentage"].value;
+var resume=document.forms["candidate_details_form"]["resume"].value;
+var skill_set=document.forms["candidate_details_form"]["skill_set"].value;
+if (first_name==null || first_name=="")
+  {
+  alert("First name must be filled out");
+  return false;
+  }
+
+
+if (last_name==null || last_name=="")
+  {
+  alert("Last name must be filled out");
+  return false;
+  }
+
+
+if (contact_number==null || contact_number=="")
+  {
+  alert("Contact Number must be filled out");
+  return false;
+  }
+
+var atpos=email_address.indexOf("@");
+var dotpos=email_address.lastIndexOf(".");
+if (atpos<1 || dotpos<atpos+2 || dotpos+2>=email_address.length)
+  {
+  alert("Not a valid e-mail address");
+  return false;
+  }
+
+
+if (passport_number==null || passport_number=="")
+  {
+  alert("Passport Number must be filled out");
+  return false;
+  }
+
+
+if (address==null || address=="")
+  {
+  alert("Address must be filled out");
+  return false;
+  }
+
+
+if (referral_name==null || referral_name=="")
+  {
+  alert("Referral Name must be filled out");
+  return false;
+  }
+
+
+if (experience_yrs==null || experience_yrs=="")
+  {
+  alert("Experience in years must be filled out");
+  return false;
+  }
+
+
+if (experience_mnths==null || experience_mnths=="")
+  {
+  alert("Experience in months must be filled out");
+  return false;
+  }
+
+
+if (current_ctc==null || current_ctc=="")
+  {
+  alert("Current CTC must be filled out");
+  return false;
+  }
+
+
+if (expected_ctc==null || expected_ctc=="")
+  {
+  alert("Expected CTC must be filled out");
+  return false;
+  }
+
+
+if (institute_name==null || institute_name=="")
+  {
+  alert("Institute Name must be filled out");
+  return false;
+  }
+
+
+if (year_of_passing==null || year_of_passing=="")
+  {
+  alert("Passing year must be filled out");
+  return false;
+  }
+
+
+if (percentage==null || percentage=="")
+  {
+  alert("Percentage must be filled out");
+  return false;
+  }
+
+
+if (resume==null || resume=="")
+  {
+  alert("Resume must be filled out");
+  return false;
+  }
+
+
+if (skill_set==null || skill_set=="")
+  {
+  alert("Skill Set must be filled out");
+  return false;
+  }
+
+}
+
+</script>
+
+</head>
+<body  bgcolor="#94AECE" onload="ClearForm()">
+<div id="maincontent">
+
+<form method="POST" action="/recruit/submit_candidate/" name="candidate_details_form" enctype="multipart/form-data" onsubmit="return validateCandidateForm()" >
+
+<p id="heading"><font style="bold" size=5><u>Candidate Details</u></font>
+
+<table>
+
+<tr>
+<td>First Name</td><td><input type="text" name="first_name"></td>
+<td>Last Name</td><td><input type="text" name="last_name"></td>
+</tr>
+<div></div>
+<tr>
+<td>Contact Number</td>
+<td><input type="text" name="contact_number" id="contact_number">
+<span id="contact_number_status"></span></td>
+
+<td>Email Address</td>
+<td><input type="text" name="email_address" id="email_address"><span id="email_status"></span>
+</td>
+</tr>
+
+<tr><td>Appliying For</font></td><td>
+<select name="job_title">
+{% for data in job_result %}
+<option>{{data.job_title}}</option>
+{% endfor %}
+</select></td>
+<td>Passport Number</td><td><input type="text" name="passport_number" id="passport_number">
+<span id="passport_number_status"></span>
+</td>
+</tr>
+
+<tr>
+<td>
+<label id="textarealabel">Contact Address</label></td><td><textarea name="address" cols="20" rows="4">
+</textarea>
+</td>
+<td>HR Name</td><td>
+<input type="text" name="hr_name" value={{username.user}} id="hr_id">
+<input type="hidden" name="hr_name" value={{username.user}}>
+</td>
+</tr>
+
+
+<tr>
+<td>Reference Type</td>
+<td>
+<select name="reference_type" id="reference">
+<option value="portal">Portal</option>
+<option value="Job Opening">Job Opening</option>
+<option value="Walk-in">Walk In</option>
+<option value="Employee Reference">Employee Reference</option>
+<option value="Vendor">Vendor</option>
+<option value="Event">Event</option>
+<option value="Job fair">Job Fair</option>
+<option value="Campus Hiring">Campus Hiring</option>
+<option value="Paper ad">Paper Ad</option>
+</select>
+</td>
+</tr>
+
+
+
+
+<tr><td>Referral Name</td><td>
+<input type="text" name="referral_name" id="referral_id">
+</td>
+</tr>
+
+<tr>
+<td>Experience(Years)</td>
+<td><input type="text" name="experience_yrs"></td>
+<td>Experience(Months)</td>
+<td><input type="text" name="experience_mnths"></td>
+</tr>
+
+<tr>
+<td>Current CTC/Annum(in lacs)</td>
+<td><input type="text" name="current_ctc"></td>
+<td>Expected CTC/Annum(in lacs)</td>
+<td><input type="text" name="expected_ctc"></td>
+</tr>
+
+<tr>
+<td>Highest Qualification</td><td>
+<select name="highest_qualification" id="highest_qualification">
+<option name="none">Select</option>
+<option value="B.E." name="b.e.">B.E</option>
+<option value="B.Tech." name="b.tech">B.Tech.</option>
+<option value="M.Tech." name="m.tech.">M.Tech.</option>
+<option value="M.B.A." name="m.b.a.">MBA</option>
+<option name="other" value='other'>Other</option>
+</select>
+</td>
+<td><input type="text" name="other_qualification" id="other_qual"></td>
+</tr>
+
+
+<tr>
+<td>Institute Name</td>
+<td><input type="text" name="institute_name"></td>
+<td>Year Of Passing</td>
+<td><input type="text" name="year_of_passing"></td>
+</tr>
+
+<tr>
+<td>
+Percentage
+</td>
+<td>
+<input type="text" name="percentage">
+</td>
+<td>
+Special Achievement
+</td>
+<td>
+<input type="text" name="special_achievements">
+</td>
+</tr>
+
+<tr>
+<td>Attach Resume</td><td><input type="file" name="resume"></td><tr>
+
+<tr>
+<td>
+<label id="textarealabel">Skill Set</label>:</td>
+<td><textarea name="skill_set" cols="20" rows="4">
+</textarea>
+</td>
+<td>Candidate Validity</td>
+<td>
+<select name="validity">
+<option value="Active">Active</option>
+<option value="Inactive">Inactive</option>
+</select>
+</td>
+</tr>
+
+<tr>
+<td>
+Stage
+</td>
+<td>
+<select name="stage" id="stage">
+<option name="Screening Round" name="Screening Round">Screening Round</option>
+<option name="First Round" name="First Round">First Round</option>
+<option name="Second Round" name="Second Round">Second Round</option>
+<option name="HR Round" name="HR Round">HR Round</option>
+<option name="US Round" name="US Round">US Round</option>
+</select>
+</td>
+<td>
+Status
+</td>
+<td>
+<select name="status" id="status">
+<option name="Offer To Be Rolled" value="Offer To Be Rolled">Offer To Be Rolled</option>
+<option name="Offered" value="Offered">Offered</option>
+<option name="Offer Accepted" value="Offer Accepted">Offer Accepted</option>
+<option name="Offer Rejected" value="Offer Rejected">Offer Rejected</option>
+<option name="On Board" value="On Board">On Board</option>
+</select>
+</td>
+</tr>
+
+
+<tr>
+
+<td rowspan="2">
+Interviewers
+</td>
+
+<!---
+<td>
+<select name="interviewer1">
+{% get_all_users as allusers %}
+{% for user in allusers %}
+<option>{{ user.first_name }}&nbsp;{{ user.last_name }}</option>
+{% endfor %}
+</select>
+</td>
+
+<td>
+<select name="interviewer2">
+{% get_all_users as allusers %}
+{% for user in allusers %}
+<option>{{ user.first_name }}&nbsp;{{ user.last_name }}</option>
+{% endfor %}
+</select>
+</td>
+
+<td>
+<select name="interviewer3">
+{% get_all_users as allusers %}
+{% for user in allusers %}
+<option>{{ user.first_name }}&nbsp;{{ user.last_name }}</option>
+{% endfor %}
+</select>
+</td>--->
+<td>
+<input type="text" name="interviewer1" id="interviewer1"></td>
+
+<td><input type="text" name="interviewer2" id="interviewer2"></td></tr>
+<tr>
+<td><input type="text" name="interviewer3" id="interviewer3"></td>
+
+<td><input type="text" name="interviewer4" id="interviewer4"></td>
+</td>
+</tr>
+
+<tr><td align="center"><input type="submit" value="Submit" class="button blue">
+<td><button class="button blue" type="button" onclick="window.location='/recruit/recruit_index/'">Back
+</button>
+</td>
+</tr>
+</table>
+</p>
+</form>
+</div>
+</body>
+</html>

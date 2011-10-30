@@ -1,0 +1,223 @@
+{% include "base.html" %}
+<html>
+<body>
+<div id="maincontent">
+<div style="float:left">
+<table border="1">
+<form name="job_selection_form" method="POST" action="/recruit/job_result/" >
+<tr>
+<td>
+<b>Job Details<b>
+</td>
+</tr>
+<tr>
+<td>
+
+<select name="job_select" onChange="updateSelectedItem(this.selectedIndex)">
+<option selected>Select Search Parameter</option>
+<option value="posting_title">Job Title</option>
+<option value="number_of_positions">Number Of Positions</option>
+<option value="job_opening_status">Opening Status</option>
+<option value="job_type">Job Type</option>
+
+</select>
+
+<select name="selected_item" id="sample">
+</select>
+
+</td>
+</tr>
+<tr>
+<td>
+<input type="submit" value="Search" name="search">
+</td>
+</tr>
+</form>
+</table>
+<div>
+<form method="POST" action="/recruit/home/" >
+<input type="submit" value="Back To Home Page" class="button blue" />
+</form>
+</div>
+</div>
+
+<script type="text/javascript">
+
+function updateSelectedItem(selecteditemgroup){
+        var myselect=document.getElementById("sample");
+        myselect.options.length=0;
+        if(selecteditemgroup==1){
+        {% for data in posting_result %}
+        try{
+            myselect.add(new Option("{{data.posting_title}}", "{{data.posting_title}}"), null);
+            }
+        catch(e){ 
+            myselect.add(new Option("{{data.posting_title}}", "{{data.posting_title}}"));
+            }
+        {% endfor %}
+        }
+        
+        if(selecteditemgroup==2){
+        {% for data in positions_result %}
+        try{
+            myselect.add(new Option("{{data.number_of_positions}}", "{{data.number_of_positions}}"), null);
+            }
+        catch(e){ 
+            myselect.add(new Option("{{data.number_of_positions}}", "{{data.number_of_positions}}"));
+            }
+        {% endfor %}
+        }
+        
+        if(selecteditemgroup==3){
+        {% for data in status_result %}
+        try{
+            myselect.add(new Option("{{data.job_opening_status}}", "{{data.job_opening_status}}"), null);
+            }
+        catch(e){ 
+            myselect.add(new Option("{{data.job_opening_status}}", "{{data.job_opening_status}}"));
+            }
+        {% endfor %}
+        }
+        
+        if(selecteditemgroup==4){
+        {% for data in job_type %}
+        try{
+            myselect.add(new Option("{{data.job_type}}", "{{data.job_type}}"), null);
+            }
+        catch(e){ 
+            myselect.add(new Option("{{data.job_type}}", "{{data.job_type}}"));
+            }
+        {% endfor %}
+        }
+        
+}      
+</script>
+
+
+<!----------------------------------------------------------->
+<div style="float:float">
+<table border="1" Id="candidate_table">
+<form name="candidate_selection_form" method="POST" action="/recruit/candidate_result/">
+
+
+<tr>
+<td>
+<b>Candidate Details<b>
+</td>
+</tr>
+<tr>
+<td>
+
+<select name="candidate_select" onChange="updatecandidateItem(this.selectedIndex)">
+<option selected>Select Search Parameter</option>
+<option value="first_name">First Name</option>
+<option value="last_name">Last Name</option>
+<option value="email_address">Email Address</option>
+<option value="applied_for">Applied Job</option>
+<option value="hr_name">HR Person</option>
+<option value="internal_reference">Internal Reference</option>
+<option value="External_reference">External Reference</option>
+</select>
+
+<select name="selected_candidate_item" id="candidate_sample">
+</select>
+
+</td>
+</tr>
+<tr>
+<td>
+<input type="submit" value="Search" name="search">
+</td>
+</tr>
+</form>
+</table>
+</div>
+
+
+<script type="text/javascript">
+
+function updatecandidateItem(selecteditemgroup){
+        var mycandidateselect=document.getElementById("candidate_sample");
+        mycandidateselect.options.length=0;
+        if(selecteditemgroup==1){
+        {% for data in firstname_result %}
+        try{
+            mycandidateselect.add(new Option("{{data.first_name}}", "{{data.first_name}}"), null);
+            }
+        catch(e){ 
+            mycandidateselect.add(new Option("{{data.first_name}}", "{{data.first_name}}"));
+            }
+        {% endfor %}
+        }
+        
+        if(selecteditemgroup==2){
+        {% for data in lastname_result %}
+        try{
+            mycandidateselect.add(new Option("{{data.last_name}}", "{{data.last_name}}"), null);
+            }
+        catch(e){ 
+            mycandidateselect.add(new Option("{{data.last_name}}", "{{data.last_name}}"));
+            }
+        {% endfor %}
+        }
+        
+        if(selecteditemgroup==3){
+        {% for data in email_result %}
+        try{
+            mycandidateselect.add(new Option("{{data.email_address}}", "{{data.email_address}}"), null);
+            }
+        catch(e){ 
+            mycandidateselect.add(new Option("{{data.email_address}}", "{{data.email_address}}"));
+            }
+        {% endfor %}
+        }
+        
+        if(selecteditemgroup==4){
+        {% for data in applied_for_result %}
+        try{
+            mycandidateselect.add(new Option("{{data.applied_for}}", "{{data.applied_for}}"), null);
+            }
+        catch(e){ 
+            mycandidateselect.add(new Option("{{data.applied_for}}", "{{data.applied_for}}"));
+            }
+        {% endfor %}
+        }
+        
+        if(selecteditemgroup==5){
+        {% for data in all_hr_name_result %}
+        try{
+            mycandidateselect.add(new Option("{{data.hr_name}}", "{{data.hr_name}}"), null);
+            }
+        catch(e){ 
+            mycandidateselect.add(new Option("{{data.hr_name}}", "{{data.hr_name}}"));
+            }
+        {% endfor %}
+        }
+        
+        if(selecteditemgroup==6){
+        {% for data in all_internal_result %}
+        try{
+            mycandidateselect.add(new Option("{{data.referral_name}}", "{{data.referral_name}}"), null);
+            }
+        catch(e){ 
+            mycandidateselect.add(new Option("{{data.referral_name}}", "{{data.referral_name}}"));
+            }
+        {% endfor %}
+        }
+        
+        if(selecteditemgroup==7){
+        {% for data in all_external_result %}
+        try{
+            mycandidateselect.add(new Option("{{data.referral_name}}", "{{data.referral_name}}"), null);
+            }
+        catch(e){ 
+            mycandidateselect.add(new Option("{{data.referral_name}}", "{{data.referral_name}}"));
+            }
+        {% endfor %}
+        }
+        
+}      
+</script>
+</div>
+</body>
+</html>

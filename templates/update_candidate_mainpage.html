@@ -1,0 +1,32 @@
+{% include "base.html" %}
+<html>
+<body>
+<div id="maincontent">
+<table border="1">
+<tr>
+<th>
+Employee Name
+</th>
+<th>
+Email Address
+</th>
+<th>
+Applied For
+</th>
+<th>
+</th>
+</tr>
+{% for candidate_result in db_result %}
+<tr>
+<td>{{candidate_result.first_name}} {{candidate_result.last_name}}</td>
+<td>{{candidate_result.email_address}}</td>
+<td>{{candidate_result.applied_for}}</td>
+<td><form method="POST" action="/recruit/update_candidate_detail/"><input type="hidden" value={{candidate_result.id}} name="candidate_id" /><input type="submit" value="Update Details"></form></td>
+<td><form method="POST" action="/recruit/update_resume/"><input type="hidden" value={{candidate_result.id}} name="candidate_id" /><input type="submit" value="Update Resume"></form></td>
+{% endfor %}
+</tr>
+</table>
+<form method="POST" action="/recruit/recruit_form/"><input type="submit" value="Back" class="button blue"></form>
+<div>
+</body>
+</html>

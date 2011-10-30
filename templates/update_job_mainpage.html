@@ -1,0 +1,75 @@
+{% include "base.html" %}
+<html>
+<body>
+<div id="maincontent">
+<table border="1">
+<tr>
+<th>
+Posting_title
+</th>
+<th>
+Department
+</th>
+<th>
+Designation
+</th>
+<th>
+Roles And Responsibilities
+</th>
+<th>
+Opened Date
+</th>
+<th>
+Closing Date
+</th>
+<th>
+Number Of Positions
+</th>
+<th>
+Opening Status
+</th>
+<th>
+Job Type
+</th>
+<th>
+Location
+</th>
+<th>
+Country
+</th>
+<th>
+Skill Set
+</th>
+<th>
+Work Experience
+</th>
+<th>
+Validity
+</th>
+<th>
+</th>
+</tr>
+{% for job_result in db_result %}
+<tr>
+<td>{{job_result.posting_title}}</td>
+<td>{{job_result.department}}</td>
+<td>{{job_result.designation}}</td>
+<td>{{job_result.roles_and_responsibilities}}</td>
+<td>{{job_result.opened_date}}/{{job_result.opened_month}}/{{job_result.opened_year}}</td>
+<td>{{job_result.closing_date}}/{{job_result.closing_month}}/{{job_result.closing_year}}</td>
+<td>{{job_result.number_of_positions}}</td>
+<td>{{job_result.job_opening_status}}</td>
+<td>{{job_result.job_type}}</td>
+<td>{{job_result.location_name}}</td>
+<td>{{job_result.country}}</td>
+<td>{{job_result.skill_set}}</td>
+<td>{{job_result.work_experience}}</td>
+<td>{{job_result.validity}}</td>
+<td><form method="POST" action="/recruit/update_job/"><input type="hidden" value="{{job_result.id}}" name="job_id" /><input type="submit" value="Update"></form></td>
+{% endfor %}
+</tr>
+</table>
+<form method="POST" action="/recruit/recruit_form/"><input type="submit" value="Back" class="button blue"></form>
+</div>
+</body>
+</html>

@@ -1,0 +1,17 @@
+Recruitment Portal is end-to-end Applicant tracking web application. It has the following features:
+1. Consolidated information about Candidate and Job at one place in Grid format using Jquery Datatable plugins.
+2. Search facility on table-level and column level.
+3. Dynamic column management facility of Grid for HR team
+4. Interviewer level-wise feedback entry and display. e.g. Level-1 interviewer can't see feedback of level-2 interviewer but level-2 interviewer can see the 	 	  
+   feedback of level-1.
+5. Column autofill facility
+6. HR admins can create new user for HR department and other department.
+7. Employees other than HR have limited access to information. HR employee have full control over the behaviour of portal i.e. can add/update/delete any of the   	  
+   information.
+8. Lightbox window for entering feedback about the candidate. Feedback once provided can not be updated by anyone except HR department.
+9. in-place check for User existance in database while making entry through username, emailid, contact number and passport number.
+10. Direct HTML table export in CSV,XLS and PDF. Apart from whole table, searched result can also be exported in CSV, XLS and PDF format.
+11. Download and update resume directly from the datatable.
+
+Note:
+This application is built in Django Python web framework. Database settings can be changed in settings.py file. For any issue while running the application, you can mail me at my.divertion@gmail.com

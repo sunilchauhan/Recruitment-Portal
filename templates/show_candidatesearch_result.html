@@ -1,0 +1,140 @@
+{% include "base.html" %}
+<html>
+<body>
+<div align="center">
+<font size="6" color="blue"> Search Result </font></div>
+<div id="searchtable">
+{%if candidate_search_result %}
+<table border="1" >
+<tr>
+<th>
+Name
+</th>
+
+<th>
+Email Address
+</th>
+
+<th>
+Resume
+</th>
+
+<th>
+Appllied For
+</th>
+
+<th>
+Contact Address
+</th>
+
+<th>
+Contact Number
+</th>
+
+<th>
+Passport Number
+</th>
+
+<th>
+Total Work Experience
+</th>
+
+<th>
+Current Job Title
+</th>
+
+<th>
+Current Employer
+</th>
+
+<th>
+Skill Set
+</th>
+
+<th>
+Current CTC<br>(in lacs/annum)
+</th>
+
+<th>
+Expected CTC<br>(in lacs/annum)
+</th>
+
+<th>
+Highest Qualification
+</th>
+
+<th>
+Reference Type
+</th>
+
+<th>
+Referral Name
+</th>
+
+<th>
+Validity
+</th>
+
+<th>
+HR Person
+</th>
+
+<th>
+Stage
+</th>
+
+<th>
+Status
+</th>
+
+</tr>
+
+{% for data in candidate_search_result %}
+<tr>
+<td>{{data.first_name}}&nbsp;&nbsp;{{data.last_name}}</td>
+<td>{{data.email_address}}</td>
+<td>
+<a href="{{MEDIA_URL}}{{data.resume}}">Download</a>
+</td>
+<td>{{data.applied_for}}</td>
+<td>{{data.contact_address}}</td>
+<td>{{data.contact_number}}</td>
+<td>{{data.passport_number}}</td>
+<td>{{data.total_work_experience}}</td>
+<td>{{data.current_job_title}}</td>
+<td>{{data.current_employer}}</td>
+<td>{{data.skill_set}}</td>
+<td>{{data.current_ctc}}</td>
+<td>{{data.expected_ctc}}</td>
+<td>{{data.highest_qualification}}</td>
+<td>{{data.reference_type}}</td>
+<td>{{data.referal_name}}</td>
+<td>{{data.validity}}</td>
+<td>{{data.hr_name}}</td>
+<td>{{data.stage}}</td>
+<td>{{data.status}}</td>
+</tr>
+{% endfor %}
+{% endif %}
+</table>
+
+<table></div>
+<tr>
+
+<td>
+<form method="POST" action="/recruit/view/" enctype="multipart/form-data">
+<input type="submit" value="Back" class="button blue" />
+</form>
+</td>
+
+<td>
+<form method="POST" action="/recruit/candidate_export/">
+<input type="hidden" name="my_column" value="{{my_column}}" /><input type="hidden" name="selected_option" value="{{selected_option}}" />
+<input type="submit" value="Export To Excel" class="button blue" />
+</form>
+</td>
+</tr>
+</table>
+</div>
+</body>
+</html>

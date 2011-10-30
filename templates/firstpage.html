@@ -1,0 +1,16 @@
+{% include "base.html" %}
+<html>
+<body>
+<div class="main_button">
+<form method="GET" action="/recruit/recruit_index/">
+<input type="submit" value="Recruitment Management" class="button blue" /></form>
+{% if user_request.user.is_superuser %}
+<form method="GET" action="/recruit/create_user/">
+<input type="submit" value="Create User" class="button blue" /></form>
+{% endif %}
+</div>
+<div align="right">
+<a href="/logout/">LOGOUT</a>
+</div>
+</body>
+</html>

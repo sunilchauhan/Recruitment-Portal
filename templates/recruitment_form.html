@@ -1,0 +1,282 @@
+{% include "header.html" %}
+<html>
+<head>
+<link rel="stylesheet" href="{{MEDIA_URL}}/style.css" type="text/css">
+<script type="text/javascript" src="{{MEDIA_URL}}/jquery.js"></script>
+<link rel="stylesheet" href="{{MEDIA_URL}}/themes/base/jquery.ui.all.css">
+<script src="{{MEDIA_URL}}/ui/jquery.ui.core.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.widget.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.tabs.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.datepicker.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.dialog.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.effects.core.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.button.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.draggable.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.position.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.resizable.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.mouse.js"></script>
+<script src="{{MEDIA_URL}}/external/jquery.bgiframe-2.1.2.js"></script>
+<script type="text/javascript" language="javascript" src="{{MEDIA_URL}}/js/jquery.dataTables.js"></script>
+<link rel="stylesheet" href="{{MEDIA_URL}}/demo_page.css" type="text/css">
+<link rel="stylesheet" href="{{MEDIA_URL}}/demo_table.css" type="text/css">
+
+<script type='text/javascript' src='{{MEDIA_URL}}/autocomplete_lib/jquery.bgiframe.min.js'></script>
+<script type='text/javascript' src='{{MEDIA_URL}}/autocomplete_lib/jquery.ajaxQueue.js'></script>
+<script type='text/javascript' src='{{MEDIA_URL}}/autocomplete_lib/thickbox-compressed.js'></script>
+<script type='text/javascript' src='{{MEDIA_URL}}/autocomplete_lib/jquery.autocomplete.js'></script>
+<link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}/autocomplete_lib/jquery.autocomplete.css" />
+<link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}/autocomplete_lib/thickbox.css" />
+
+
+<script type="text/javascript">
+function ClearForm(){
+    document.job_detail_form.reset();
+}
+</script>
+
+<script>
+$(document).ready(function(){
+$("#location_id").focus(function(){
+$.getJSON('/recruit/check_location/',null,function(location){
+$("#location_id").autocomplete(location);
+});
+});
+
+$("#job_title_id").focus(function(){
+$.getJSON('/recruit/check_title/',null,function(title){
+$("#job_title_id").autocomplete(title);
+});
+});
+
+$("#skill_set_id").focus(function(){
+$.getJSON('/recruit/check_skill_set/',null,function(skill_set){
+$("#skill_set_id").autocomplete(skill_set);
+});
+});
+
+
+$("#roles_id").focus(function(){
+$.getJSON('/recruit/check_roles/',null,function(roles){
+$("#roles_id").autocomplete(roles);
+});
+});
+
+});
+</script>
+
+<script>
+	$(function() {
+		$( ".date_class" ).datepicker();
+	});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+$("#submit_button").click(function(){
+date1=$("#open_date").val();
+date2=$("#close_date").val();
+if(date1>date2){
+alert("Closing date should be equal to or greater than Opening date");
+return false;
+}
+});
+});
+
+</script>
+
+<script type="text/javascript">
+
+function validateJobForm()
+{
+var job_title=document.forms["job_detail_form"]["job_title"].value;       
+var open_date=document.forms["job_detail_form"]["open_date"].value;
+var close_date=document.forms["job_detail_form"]["close_date"].value;
+var No_of_pos=document.forms["job_detail_form"]["No_of_pos"].value;
+var location=document.forms["job_detail_form"]["location"].value;
+var minwork_experience=document.forms["job_detail_form"]["minwork_experience"].value;
+var maxwork_experience=document.forms["job_detail_form"]["maxwork_experience"].value;
+var skill=document.forms["job_detail_form"]["skill"].value;  
+var roles=document.forms["job_detail_form"]["roles"].value;
+
+if (job_title==null || job_title=="")
+  {
+  alert("Job Title must be filled out");
+  return false;
+  }
+  
+  if (open_date==null || open_date=="")
+  {
+  alert("Open Date must be filled out");
+  return false;
+  }
+  
+  if (close_date==null || close_date=="")
+  {
+  alert("Close Date must be filled out");
+  return false;
+  }
+  
+  if (No_of_pos==null || No_of_pos=="")
+  {
+  alert("Positions must be filled out");
+  return false;
+  }
+  
+  if (location==null || location=="")
+  {
+  alert("Location must be filled out");
+  return false;
+  }
+  
+  if (minwork_experience==null || minwork_experience=="")
+  {
+  alert("Minimum Work Experience must be filled out");
+  return false;
+  }
+  
+  if (maxwork_experience==null || maxwork_experience=="")
+  {
+  alert("Maximum Work Experience must be filled out");
+  return false;
+  }
+  
+  if (skill==null || skill=="")
+  {
+  alert("Skill must be filled out");
+  return false;
+  }
+  
+  if (roles==null || roles=="")
+  {
+  alert("Roles must be filled out");
+  return false;
+  }
+  
+  
+}
+</script>
+</head>
+<body bgcolor="#94AECE" onload="ClearForm()">
+<div id="maincontent">
+<form method="POST" action="/recruit/submit/" name="job_detail_form" onsubmit="return validateJobForm()">
+
+<p id="heading"><font style="bold" size=5><u>Job Details</u></font>
+
+<table>
+<tr>
+<td>Job Title</td>
+<td><input type="text" name="job_title" id="job_title_id"></td>
+</tr>
+
+<tr>
+<td>Department
+</td>
+<td>
+<select name="department">
+<option name="Engineering/IT">Engineering/IT </option>
+<option name="Information Security">Information Security </option>
+<option name="Finance and Operations">Finance and Operations </option>
+<option name="HRD">HRD</option>
+</select>
+</td>
+
+
+<td>Designation</td>
+<td><select name="designation">
+<option value="Software Engineer">Software Engineer</option>
+<option value="Systems Engineer">Systems Engineer</option>
+<option value="Business Analyst">Business Analyst</option>
+</select>
+</td>
+</tr>
+
+<tr><td>Opening Date</td> 
+<td><input type="text" class="date_class" name="open_date" id="open_date"></td>
+<td>Closing Date</td> 
+<td><input type="text" class="date_class" name="close_date" id="close_date"></td>
+</tr>
+
+<tr>
+<td><font>Number Of Positions</td>
+<td><input type="text" name="No_of_pos"></td>
+<td>Job Opening Status</td>
+<td>
+<select name="job_opening_status">
+<!---<option value="None" selected>Select</option>--->
+<option value="In-Progress">In-Progress</option>
+<option value="Waiting For Approval">Waiting For Approval</option>
+<option value="On-Hold">On-Hold</option>
+<option value="Filled">Filled</option>
+<option value="Cancelled">Cancelled</option>
+<option value="Declined">Declined</option>
+</select>
+</td>
+</tr>
+
+<tr>
+<td>Country</td>
+<td>
+<select name="country">
+	<optgroup label="">
+		<option value="India" selected %}>India</option>
+	</optgroup>
+	<optgroup label="common choices">
+		<option value="United States">United States</option> 
+		<option value="United Kingdom">United Kingdom</option> 
+		<option value="France">France</option> 
+		<option value="Germany">Germany</option> 
+		<option value="Spain">Spain</option> 
+		<option value="Italy">Italy</option> 
+		<option value="Canada">Canada</option> 
+	</optgroup>
+</select>
+</td>
+<td>Location</td>
+<td><input type="text" name="location" id="location_id"></td>
+</tr>
+
+<tr>
+<td>Min. Experience</td><td><input type="text" name="minwork_experience"></td>
+<td>Max. Experience:</td><td><input type="text" name="maxwork_experience"></td>
+</tr>
+
+<tr>
+<td>
+<label id="textarealabel">Skill Set</label></td>
+<td><textarea name="skill" cols="20" rows="4" id="skill_set_id"></textarea></td>
+</tr>
+
+<tr>
+<td><label id="textarealabel">Roles and <br>responsibilities</label></td>
+<td><textarea name="roles" cols="20" rows="4" id="roles_id"></textarea></td> 
+</tr>
+
+
+<tr><td>Job Type</td><td><select name="job_type">
+<!---<option name="None" selected>Select</option>--->
+<option name="full_time">Full Time</option>
+<option name="part_time">Part Time</option>
+<option name="temporary">Temporary</option>
+<option name="contract">Contract</option>
+<option name="temporary_to_contract">Contract To Permanent</option>
+</select></td>
+
+<td>Job Validity</td>
+<td>
+<select name="validity">
+<option value="Active" selected=True>Active</option>
+<option value="Inactive">Inactive</option>
+</select>
+</td>
+</tr>
+
+<tr>
+<td align="center"><input type="submit" value="Submit" class="button blue" id="submit_button"></input></td>
+<td><button class="button blue" type="button" onclick="window.location='/recruit/recruit_index/'">Back</button></td>
+</tr>
+</table>
+</p>
+</form>
+</div>
+</body>
+</html>

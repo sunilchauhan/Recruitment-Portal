@@ -1,0 +1,41 @@
+{% include "base.html" %}
+<html>
+<body>
+<div id="maincontent">
+<table border="1">
+<tr>
+<th>
+Candidate Name
+</th>
+<th>
+Email Address
+</th>
+<th>
+Stage
+</th>
+<th>
+<th>
+</tr>
+{% if db_result %}
+{% for candidate_records in db_result %}
+<tr>
+<td>
+{{candidate_records.first_name}} {{candidate_records.last_name}}
+</td>
+<td>
+{{candidate_records.email_address}}
+</td>
+<td>
+{{candidate_records.stage}}
+</td>
+<td>
+<form method="POST" action="/recruit/update_stage_form/"><input type="hidden" name="candidate_id" value="{{candidate_records.id}}"><input type="submit" value="UPDATE" ></form>
+</td>
+</tr>
+{% endfor %}
+{% endif %}
+</table>
+<form method="POST" action="/recruit/home/"><input type="submit" value="Back To Home Page" class="button blue"></form>
+</div>
+</body>
+</html>

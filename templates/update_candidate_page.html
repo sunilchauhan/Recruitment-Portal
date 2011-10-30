@@ -1,0 +1,282 @@
+{% include "header.html" %}
+<html>
+<head>
+
+<link rel="stylesheet" href="{{MEDIA_URL}}/style.css" type="text/css">
+<script type="text/javascript" src="{{MEDIA_URL}}/jquery.js"></script>
+<link rel="stylesheet" href="{{MEDIA_URL}}/themes/base/jquery.ui.all.css">
+<script src="{{MEDIA_URL}}/ui/jquery.ui.core.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.widget.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.tabs.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.datepicker.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.dialog.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.effects.core.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.button.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.draggable.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.position.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.resizable.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.mouse.js"></script>
+<script src="{{MEDIA_URL}}/external/jquery.bgiframe-2.1.2.js"></script>
+<script type="text/javascript" language="javascript" src="{{MEDIA_URL}}/js/jquery.dataTables.js"></script>
+<link rel="stylesheet" href="{{MEDIA_URL}}/demo_page.css" type="text/css">
+<link rel="stylesheet" href="{{MEDIA_URL}}/demo_table.css" type="text/css">
+<!---------------------------------------------------->
+<script type='text/javascript'>
+var previous_email = '';
+var in_ajax = 0;
+function checkEmail() {
+    email = $("#email_address").val();
+    if ((previous_email != email) && (email != '') && (in_ajax != 1)) {
+        in_ajax = 1;
+        $("#email_status").html("<img src='/media/busy.gif' />");
+        $("#email_status").load('/recruit/check_email/', {email: email}, function() { $("input[id$='email_address']").focus();in_ajax=0});
+    }
+    previous_email = email;
+}
+
+$(function() {
+    setInterval("checkEmail()", 1000);
+});
+</script>
+
+<script type='text/javascript'>
+var previous_contact_number = '';
+var in_ajax = 0;
+function checkContact() {
+    contact_number = $("#contact_number").val();
+    if ((previous_contact_number != contact_number) && (contact_number != '') && (in_ajax != 1)) {
+        in_ajax = 1;
+        $("#contact_number_status").html("<img src='/media/busy.gif' />");
+        $("#contact_number_status").load('/recruit/check_contact_number/', {contact_number: contact_number}, function() { $("input[id$='contact_number']").focus();in_ajax=0});
+    }
+    previous_contact_number = contact_number;
+}
+
+$(function() {
+    setInterval("checkContact()", 1000);
+});
+</script>
+
+<script type='text/javascript'>
+var previous_passport_number = '';
+var in_ajax = 0;
+function checkPassport() {
+    passport_number = $("#passport_number").val();
+    if ((previous_passport_number != passport_number) && (passport_number != '') && (in_ajax != 1)) {
+        in_ajax = 1;
+        $("#passport_number_status").html("<img src='/media/busy.gif' />");
+        $("#passport_number_status").load('/recruit/check_passport_number/', {passport_number: passport_number}, function() { $("input[id$='passport_number']").focus();in_ajax=0});
+    }
+    previous_passport_number = passport_number;
+}
+
+$(function() {
+    setInterval("checkPassport()", 1000);
+});
+</script>
+
+<!---------------------------------------------------->
+
+</head>
+<body  bgcolor="#94AECE">
+<div id="maincontent">
+<form method="POST" action="/recruit/candidate_update_done/" name="candidate_details_form" enctype="multipart/form-data" >
+<p id="heading"><font style="bold" size=5><u>Candidate Details</u></font>
+
+<table>
+{% for candidate_result in db_result %}
+
+<tr><td>First Name:</td><td><input type="text" name="first_name" value="{{candidate_result.first_name}}"></td></tr>
+
+<tr><td>Last Name:</td><td><input type="text" name="last_name" value="{{candidate_result.last_name}}"></td></tr>
+
+<tr>
+<td>Contact Number:</td>
+<td><input type="text" name="contact_number" id="contact_number" value="{{candidate_result.contact_number}}" >
+<span id="contact_number_status">
+</span>
+</td>
+</tr>
+
+<tr><td>Email Address:</td><td><input type="text" name="email_address" id="email_address" value="{{candidate_result.email_address}}"><span id="email_status"></span></td></tr>
+
+<tr>
+<td>Applying For:</td>
+<td>
+<select name="job_title">
+{% for postings in posting_result %}
+<option {% ifequal candidate_result.applied_for postings.job_title %} selected {% endifequal %}>
+{{postings.job_title}}</option>
+{% endfor %}
+</select>
+</td>
+</tr>
+
+<tr>
+<td>Passport Number</font>:</td>
+<td><input type="text" name="passport_number" id="passport_number" value="{{candidate_result.passport_number}}">
+<span id="passport_number_status">
+</span>
+</td>
+</tr>
+
+<tr><td><label id="textarealabel">Contact Address</label>:</td><td><textarea name="address" cols="20" rows="4">{{candidate_result.contact_address}}</textarea></td>
+
+
+<tr>
+<td>HR Name:</td><td>
+<input type="text" name="hr_name" value="{{candidate_result.hr_name}}">
+</td>
+</tr>
+
+
+<tr>
+<td>Reference Type</td>
+<td>
+<select name="reference_type" id="reference">
+<option value="portal" {% ifequal candidate_result.reference_type 'portal' %} selected {% endifequal %}>Portal</option>
+<option value="Job Opening" {% ifequal candidate_result.reference_type 'Job Opening' %} selected {% endifequal %}>Job Opening</option>
+<option value="Walk-in" {% ifequal candidate_result.reference_type 'Walk-in' %} selected {% endifequal %}>Walk In</option>
+<option value="Employee Reference" {% ifequal candidate_result.reference_type 'Employee Reference' %} selected {% endifequal %}>Employee Reference</option>
+<option value="Vendor" {% ifequal candidate_result.reference_type 'Vendor' %} selected {% endifequal %}>Vendor</option>
+<option value="Event" {% ifequal candidate_result.reference_type 'Event' %} selected {% endifequal %}>Event</option>
+<option value="Job fair" {% ifequal candidate_result.reference_type 'Job fair' %} selected {% endifequal %}>Job Fair</option>
+<option value="Campus Hiring" {% ifequal candidate_result.reference_type 'Campus Hiring' %} selected {% endifequal %}>Campus Hiring</option>
+<option value="Paper ad" {% ifequal candidate_result.reference_type 'Paper ad' %} selected {% endifequal %}>Paper Ad</option>
+</select>
+</td>
+</tr>
+<!-------------------------------
+
+<tr>
+<td>Reference Type</td>
+<td>
+<select name="reference_type">
+<option value="internal" {% ifequal candidate_result.reference_type 'Internal' %} selected {% endifequal %}>Internal</option>
+<option value="external" {% ifequal candidate_result.reference_type 'External' %} selected {% endifequal %}>External</option>
+</select>
+</td>
+</tr>-->
+
+<tr><td>Referral Name:</td>
+<td>
+<input type="text" name="referal_name" value="{{candidate_result.referral_name}}">
+</td>
+</tr>
+
+<tr>
+<td>Experience(Years)</td>
+<td><input type="text" name="experience_yrs" value="{{candidate_result.work_experience_years}}"></td>
+<td>Experience(Months)</td>
+<td><input type="text" name="experience_mnths" value="{{candidate_result.work_experience_months}}"></td>
+</tr>
+
+<tr>
+<td>Current CTC/Annum(in lacs)</td>
+<td><input type="text" name="current_ctc" value="{{candidate_result.current_ctc}}"></td>
+<td>Expected CTC/Annum(in lacs)</td>
+<td><input type="text" name="expected_ctc" value="{{candidate_result.expected_ctc}}"></td>
+</tr>
+
+<tr>
+<td>Highest Qualification</td>
+<td>
+<input type="text" name="qualification" value="{{candidate_result.qualification}}">
+</td>
+</tr>
+
+<tr>
+<td>Institute Name</td>
+<td><input type="text" name="institute_name" value="{{candidate_result.institute_name}}"></td>
+<td>Year Of Passing</td>
+<td><input type="text" name="year_of_passing" value="{{candidate_result.year_of_passing}}"></td>
+</tr>
+
+<tr>
+<td>
+Percentage
+</td>
+<td>
+<input type="text" name="percentage" value="{{candidate_result.percentage}}">
+</td>
+<td>
+Special Achievement
+</td>
+<td>
+<input type="text" name="special_achievements" value="{{candidate_result.special_achievement}}">
+</td>
+</tr>
+
+<tr>
+<td>
+<label id="textarealabel">Skill Set</label>:</td>
+<td><textarea name="skill_set" cols="20" rows="4">
+{{candidate_result.skill_set}}
+</textarea>
+</td>
+<td>Candidate Validity</td>
+<td>
+<select name="validity">validity
+<option value="Active" {% ifequal candidate_result.reference_type 'Active' %} selected {% endifequal %}>Active</option>
+<option value="Inactive" {% ifequal candidate_result.reference_type 'Inactive' %} selected {% endifequal %}>Inactive</option>
+</select>
+</td>
+</tr>
+
+<tr>
+<td>
+Stage
+</td>
+<td>
+<select name="stage" id="stage">
+<option name="Screening Round" {% ifequal candidate_result.reference_type 'Screening Round' %} selected {% endifequal %}>Screening Round</option>
+<option name="First Round" {% ifequal candidate_result.reference_type 'First Round' %} selected {% endifequal %}>First Round</option>
+<option name="Second Round" {% ifequal candidate_result.reference_type 'Second Round' %} selected {% endifequal %}>Second Round</option>
+<option name="HR Round" {% ifequal candidate_result.reference_type 'HR Round' %} selected {% endifequal %}>HR Round</option>
+<option name="US Round" {% ifequal candidate_result.reference_type 'US Round' %} selected {% endifequal %}>US Round</option>
+</select>
+</td>
+<td>
+Status
+</td>
+<td>
+<select name="status" id="status">
+<option value="Offer To Be Rolled" {% ifequal candidate_result.reference_type 'Offer To Be Rolled' %} selected {% endifequal %}>Offer To Be Rolled</option>
+<option value="Offered" {% ifequal candidate_result.reference_type 'Offered' %} selected {% endifequal %}>Offered</option>
+<option value="Offer Accepted" {% ifequal candidate_result.reference_type 'Offer Accepted' %} selected {% endifequal %}>Offer Accepted</option>
+<option value="Offer Rejected" {% ifequal candidate_result.reference_type 'Offer Rejected' %} selected {% endifequal %}>Offer Rejected</option>
+<option value="On Board" {% ifequal candidate_result.reference_type 'On Board' %} selected {% endifequal %}>On Board</option>
+</select>
+</td>
+</tr>
+
+<tr>
+
+<td rowspan="2">
+Interviewers
+</td>
+
+<td><input type="text" name="interviewer1" id="interviewer1" value="{{candidate_result.level1_interviewer}}"></td>
+
+<td><input type="text" name="interviewer2" id="interviewer2" value="{{candidate_result.level2_interviewer}}"></td>
+
+</tr>
+<tr>
+<td><input type="text" name="interviewer3" id="interviewer3" value="{{candidate_result.level3_interviewer}}"></td>
+
+<td><input type="text" name="interviewer4" id="interviewer4" value="{{candidate_result.level4_interviewer}}"></td>
+</td>
+</tr>
+
+<tr>
+<td align="center"><input type="hidden" value="{{candidate_result.id}}" name="candidate_id" />
+<input type="submit" value="Submit" class="button blue">
+<input type="button" value="Back" onClick="window.location='/recruit/recruit_index/'"class="button blue"></td>
+</tr>
+{% endfor %}
+</table>
+</form>
+</p>
+</div>
+</body>
+</html>

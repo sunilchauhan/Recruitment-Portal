@@ -1,0 +1,40 @@
+{% include "header.html" %}
+<html>
+<head>
+<link rel="stylesheet" href="{{MEDIA_URL}}/style.css" type="text/css">
+<script type="text/javascript" src="{{MEDIA_URL}}/jquery.js"></script>
+<link rel="stylesheet" href="{{MEDIA_URL}}/themes/base/jquery.ui.all.css">
+<script src="{{MEDIA_URL}}/ui/jquery.ui.core.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.widget.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.tabs.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.datepicker.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.dialog.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.effects.core.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.button.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.draggable.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.position.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.resizable.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.mouse.js"></script>
+<script src="{{MEDIA_URL}}/external/jquery.bgiframe-2.1.2.js"></script>
+<script type="text/javascript" language="javascript" src="{{MEDIA_URL}}/js/jquery.dataTables.js"></script>
+<link rel="stylesheet" href="{{MEDIA_URL}}/demo_page.css" type="text/css">
+<link rel="stylesheet" href="{{MEDIA_URL}}/demo_table.css" type="text/css">
+</head>
+<body>
+<div id="maincontent">
+<table>
+<form method="POST" action="/recruit/update_resume_done/" enctype="multipart/form-data">
+<tr><td><a href="{{MEDIA_URL}}{{candidate_result.resume}}">Download Current Resume</a></td></tr>
+<tr></tr><tr></tr><tr></tr><tr></tr><tr></tr>
+<tr><td><input type="hidden" value="{{candidate_result.id}}" name="candidate_id">
+Upload New Resume:&nbsp;&nbsp;&nbsp;<input type="file" name="new_resume" /></td></tr>
+<tr>
+<td><input type="submit" value="Submit" class="button blue">
+<button class="button blue" type="button" onclick="window.location='/recruit/recruit_index/'">Back</button>
+</td>
+</tr>
+</form>
+</table>
+</div>
+</body>
+</html>

@@ -1,0 +1,152 @@
+{% include "header.html" %}
+<html>
+<head>
+<link rel="stylesheet" href="{{MEDIA_URL}}/style.css" type="text/css">
+<script type="text/javascript" src="{{MEDIA_URL}}/jquery.js"></script>
+<link rel="stylesheet" href="{{MEDIA_URL}}/themes/base/jquery.ui.all.css">
+<script src="{{MEDIA_URL}}/ui/jquery.ui.core.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.widget.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.tabs.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.datepicker.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.dialog.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.effects.core.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.button.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.draggable.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.position.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.resizable.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.mouse.js"></script>
+<script src="{{MEDIA_URL}}/external/jquery.bgiframe-2.1.2.js"></script>
+<script type="text/javascript" language="javascript" src="{{MEDIA_URL}}/js/jquery.dataTables.js"></script>
+<link rel="stylesheet" href="{{MEDIA_URL}}/demo_page.css" type="text/css">
+<link rel="stylesheet" href="{{MEDIA_URL}}/demo_table.css" type="text/css">
+</head>
+<body  bgcolor="#94AECE">
+
+<div id="maincontent">
+
+<form method="POST" action="/recruit/job_update_done/" name="job_detail_form">
+
+<p id="heading">
+<font style="bold" size=5><u>Job Details</u></font>
+<table>
+{% for job_result in db_result %}
+
+<tr>
+<td>Job title</td>
+<td><input type="text" name="job_title" value="{{job_result.job_title}}"></td>
+</tr>
+
+<tr>
+<td>Department</td>
+<td>
+<select name="department">
+<option value="Engineering/IT" {% ifequal job_result.department "Engineering/IT" %} selected {% endifequal %}>Engineering/IT </option>
+<option value="Information Security" {% ifequal job_result.department "Information Security" %} selected {% endifequal %}>Information Security </option>
+<option value="Finance and Operations" {% ifequal job_result.department "Finance and Operations" %} selected {% endifequal %}>Finance and Operations </option>
+<option value="HRD" {% ifequal job_result.department "HRD" %} selected {% endifequal %}>HRD</option>
+</select>
+</td>
+
+<td>Designation</td>
+<td><select name="designation">
+<option value="Software Engineer" {% ifequal job_result.department "Software Engineer" %} selected {% endifequal %}>Software Engineer</option>
+<option value="Systems Engineer" {% ifequal job_result.department "Systems Engineer" %} selected {% endifequal %}>Systems Engineer</option>
+<option value="Business Analyst" {% ifequal job_result.department "Business Analyst" %} selected {% endifequal %}>Business Analyst</option>
+</select>
+</td>
+</tr>
+
+<tr><td>Opening Date</td> 
+<td><input type="text" class="date_class" name="open_date" value="{{job_result.opening_date}}"></td>
+<td>Closing Date</td> 
+<td><input type="text" class="date_class" name="close_date" value="{{job_result.closing_date}}"></td>
+</tr>
+
+<tr>
+<td><font>Number Of Positions</td>
+<td><input type="text" name="No_of_pos" value="{{job_result.number_of_positions}}"></td>
+<td>Job Opening Status</td>
+<td>
+<select name="job_opening_status">
+<option value="None" {% ifequal job_result.job_opening_status "None" %} selected {% endifequal %}>Select</option>
+<option value="Waiting For Approval" {% ifequal job_result.job_opening_status "Waiting For Approval" %} selected {% endifequal %}>Waiting For Approval</option>
+<option value="In-Progress" {% ifequal job_result.job_opening_status "In-Progress" %} selected {% endifequal %}>In-Progress</option>
+<option value="On-Hold" {% ifequal job_result.job_opening_status "On-Hold" %} selected {% endifequal %}>On-Hold</option>
+<option value="Filled" {% ifequal job_result.job_opening_status "Filled" %} selected {% endifequal %}>Filled</option>
+<option value="Cancelled" {% ifequal job_result.job_opening_status "Cancelled" %} selected {% endifequal %}>Cancelled</option>
+<option value="Declined" {% ifequal job_result.job_opening_status "Declined" %} selected {% endifequal %}>Declined</option>
+</select>
+</td>
+</tr>
+
+<tr>
+<td>Country</td>
+<td>
+<select name="country">
+	<optgroup label="">
+		<option value="India" {% ifequal job_result.country "India" %} selected {% endifequal %}>India</option>
+	</optgroup>
+	<optgroup label="common choices">
+		<option value="United States" {% ifequal job_result.country "United States" %} selected {% endifequal %}>United States</option> 
+		<option value="United Kingdom" {% ifequal job_result.country "United Kingdom" %} selected {% endifequal %}>United Kingdom</option> 
+		<option value="France" {% ifequal job_result.country "France" %} selected {% endifequal %}>France</option> 
+		<option value="Germany" {% ifequal job_result.country "Germany" %} selected {% endifequal %}>Germany</option> 
+		<option value="Spain" {% ifequal job_result.country "Spain" %} selected {% endifequal %}>Spain</option> 
+		<option value="Italy" {% ifequal job_result.country "Italy" %} selected {% endifequal %}>Italy</option> 
+		<option value="Canada" {% ifequal job_result.country "Canada" %} selected {% endifequal %}>Canada</option> 
+	</optgroup>
+</select>
+</td>
+<td>Location</td>
+<td><input type="text" name="location" value="{{job_result.location_name}}"></td>
+</tr>
+
+<tr>
+<td>Min. Experience</td>
+<td><input type="text" name="minwork_experience" value="{{job_result.min_experience}}"></td>
+<td>Max. Experience:</td>
+<td><input type="text" name="maxwork_experience" value="{{job_result.max_experience}}"></td>
+</tr>
+
+<tr>
+<td>
+<label id="textarealabel">Skill Set</label></td>
+<td><textarea name="skill" cols="20" rows="4">{{job_result.skill_set}}</textarea></td>
+</tr>
+
+<tr>
+<td><label id="textarealabel">Roles and <br>responsibilities</label></td>
+<td><textarea name="roles" cols="20" rows="4">{{job_result.roles_and_responsibilities}}</textarea></td>
+</tr>
+
+
+<tr><td>Job Type</td>
+<td><select name="job_type">
+<option value="None" {% ifequal job_result.job_type "None" %} selected {% endifequal %}>Select</option>
+<option value="Full Time" {% ifequal job_result.job_type "Full Time" %} selected {% endifequal %}>Full Time</option>
+<option name="Part Time" {% ifequal job_result.job_type "Part Time" %} selected {% endifequal %}>Part Time</option>
+<option name="Temporary" {% ifequal job_result.job_type "Temporary" %} selected {% endifequal %}>Temporary</option>
+<option name="Contract" {% ifequal job_result.job_type "Contract" %} selected {% endifequal %}>Contract</option>
+</select></td>
+
+<td>Job Validity</td>
+<td>
+<select name="validity">
+<option value="Active" {% ifequal job_result.job_type "Active" %} selected {% endifequal %}>Active</option>
+<option value="Inactive" {% ifequal job_result.job_type "Inactive" %} selected {% endifequal %}>Inactive</option>
+</select>
+</td>
+</tr>
+
+
+<tr>
+<input type="hidden" value="{{job_result.id}}" name="candidate_id" />
+<td align="center"><input type="submit" value="Submit" class="button blue"></input>
+</td>
+</tr>
+{% endfor %}
+</table>
+</form>
+</div>
+</body>
+</html>

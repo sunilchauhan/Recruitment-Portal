@@ -1,0 +1,50 @@
+{% include "header.html" %}
+<html>
+<head>
+<script type="text/javascript" src="{{MEDIA_URL}}/jquery.js"></script>
+<link rel="stylesheet" href="{{MEDIA_URL}}/style.css" type="text/css">
+<script type='text/javascript'>
+var previous_user_name = '';
+var in_ajax = 0;
+function checkusername() {
+    user_name = $("#user_name").val();
+    if ((previous_user_name != user_name) && (user_name != '') && (in_ajax != 1)) {
+        in_ajax = 1;
+        $("#username_status").html("<img src='/media/busy.gif' />");
+        $("#username_status").load('/recruit/checkusername/', {user_name: user_name}, function() { $("input[id$='user_name']").focus();in_ajax=0});
+    }
+    previous_user_name = user_name;
+}
+
+$(function() {
+    setInterval("checkusername()", 1000);
+});
+</script>
+</head>
+<body bgcolor="#94AECE">
+<div id="maincontent">
+<form method="POST" action="/recruit/create_login/">
+<p id="heading"><font style="bold" size=5><u>CREATE USER FORM</u></font><br><br>
+<table>
+<tr><td>Login Name</td><td><input type="text" name="user_name" id="user_name"><span id="username_status"></span></td></tr>
+<tr><td>First Name</td><td><input type="text" name="first_name"></td><td>Last Name:</td><td><input type="text" name="last_name"></td></tr>
+<tr><td>Email Address</td><td><input type="text" name="email_address"></td></tr>
+<tr><td>Password</td><td><input type="password" name="password"></td></tr>
+<tr><td>Re-enter Password</td><td><input type="password" name="confirm_password"></td>
+<td>Department</td>
+<td>
+<select name="dept">
+<option>HR</option>
+<option>OTHER</option>
+</select>
+</td>
+</tr>
+<tr><td><input type="submit" value="Create User" class="button blue"></td>
+<td><input type="button" value="Back" onClick="window.location='/home/'" class="button blue"></td></tr>
+<tr><td></td></tr>
+</table><br>
+</form>
+</p>
+</div>
+</body>
+</html>

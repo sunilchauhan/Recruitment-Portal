@@ -1,0 +1,18 @@
+{% include "header.html" %}
+<html>
+<head>
+<script type="text/javascript" src="{{MEDIA_URL}}/jquery.js"></script>
+<link rel="stylesheet" href="{{MEDIA_URL}}/style.css" type="text/css">
+</head>
+<body bgcolor="#94AECE">
+<div id="maincontent">
+<font style="bold" size=5><u>Feedback Form</u></font>
+<form method="POST" action="/recruit/feedback_updated/">
+<div align="center">
+<input type="hidden" name="candidate_id" value={{candidate_id}}>
+<textarea name="feedback" cols="30"></textarea><br><br>
+<input type="submit" value="Submit" class="button blue"></div>
+</form>
+
+</body>
+</html>

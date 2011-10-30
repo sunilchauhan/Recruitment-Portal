@@ -1,0 +1,27 @@
+{% include "base.html" %}
+<html>
+<head>
+<body>
+<div id="maincontent">
+<table><tr>
+<td><form method="POST" action="/recruit/recruit_form/"><input type="submit" name="recruitment_requisition" value="RRF" class="button blue"></input></form></td>
+<td><form method="POST" action="/recruit/candidate_form/"><input type="submit" name="candidate_details" value="Candidate Details" class="button blue"></input></form></td>
+<td><form method="POST" action="/recruit/interview_main_page/"><input type="submit" name="Interview process Details" value="Interview Process Details" class="button blue"></input></form></td>
+<td><form method="POST" action="/recruit/status_main_page/"><input type="submit" name="Status Details" value="Status Details" class="button blue"></input></form></td>
+<td><form method="POST" action="/recruit/view/"><input type="submit" name="view_details" value="Generate Report" class="button blue"></input></form></td>
+<!---<td><form method="GET" action="/"><input type="submit" name="Back" value="Back" class="button blue"></input></form></td>--->
+</tr>
+</table>
+</div>
+<div class="create_user">
+{% if yes_superuser %}
+<form method="GET" action="/recruit/create_user/">
+<input type="submit" value="Create User" class="button blue">
+<input type="button" value="Back" onClick="window.location='/'" class="button blue">
+</form>
+{% else %}
+<input type="button" value="Back" onClick="window.location='/'" class="button blue">
+{% endif %}
+</div>
+</body>
+</html>

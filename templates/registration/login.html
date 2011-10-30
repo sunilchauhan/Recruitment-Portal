@@ -1,0 +1,34 @@
+<html>
+<head>
+<link rel="stylesheet" href="{{MEDIA_URL}}/style.css" type="text/css">
+<script type="text/javascript" src="{{MEDIA_URL}}/jquery.js"></script>
+<link rel="stylesheet" href="{{MEDIA_URL}}/themes/base/jquery.ui.all.css">
+<script src="{{MEDIA_URL}}/ui/jquery.ui.core.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.widget.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.tabs.js"></script>
+</head>
+<body  bgcolor="#94AECE">
+<div class="mainimages">
+<img src="{{MEDIA_URL}}/name.jpg" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="{{MEDIA_URL}}/my_image.jpg" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="{{MEDIA_URL}}/header.jpg" /></div>
+<hr></hr>
+<form method="post" action="{% url django.contrib.auth.views.login %}">
+
+<div align="center">
+{{ form.username.label_tag }}
+{{ form.username }}
+</div>
+
+<div align="center">
+{{ form.password.label_tag }}
+{{ form.password }}
+</div><br>
+<div align="center">
+&nbsp;&nbsp;<input class="button blue" type="submit" value="login" />
+</div>
+{% if form.errors %}
+<p><font color="red">Your Username and password do not match. Please enter again.</font></p>
+{% endif %}</form>
+</body>
+</html>

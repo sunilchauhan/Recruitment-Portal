@@ -1,0 +1,93 @@
+{% include "base.html" %}
+<html>
+<body>
+<div align="center">
+<font size="6" color="blue"> Search Result </font></div>
+<div id="maincontent">
+<div class="scroll">
+{%if job_search_result %}
+<table border="1">
+<tr>
+<th>
+Opening Id
+</th>
+<th>
+Posting Title
+</th>
+<th>
+Department
+</th>
+<th>
+Designation
+</th>
+<th>
+Roles and Responsibilities
+</th>
+<th>
+Post Opened
+</th>
+<th>
+Closing Date
+</th>
+<th>
+Number Of Positions
+</th>
+<th>
+Opening Status
+</th>
+<th>
+Job Type
+</th>
+<th>
+Location
+</th>
+<th>
+Country
+</th>
+<th>
+Skill Set
+</th>
+<th>
+Work Experience
+</th>
+</tr>
+
+{% for data in job_search_result %}
+<tr>
+<td>{{data.id}}</td>
+<td>{{data.posting_title}}</td>
+<td>{{data.department}}</td>
+<td>{{data.designation}}</td>
+<td>{{data.roles_and_responsibilities}}</td>
+<td>{{data.opened_date}}/{{data.opened_month}}/{{data.opened_year}}</td>
+<td>{{data.closing_date}}/{{data.closing_month}}/{{data.closing_year}}</td>
+<td>{{data.number_of_positions}}</td>
+<td>{{data.job_opening_status}}</td>
+<td>{{data.job_type}}</td>
+<td>{{data.location_name}}</td>
+<td>{{data.country}}</td>
+<td>{{data.skill_set}}</td>
+<td>{{data.work_experience}}</td>	
+</tr>
+{% endfor %}
+</table>
+{% endif %}
+
+<table>
+<tr>
+<td>
+<form method="POST" action="/recruit/view/" >
+<input type="submit" value="Back" class="button blue" />
+</form>
+</td>
+<td>
+<form method="POST" action="/recruit/job_export/">
+<input type="hidden" name="my_column" value="{{my_column}}" /><input type="hidden" name="selected_option" value="{{selected_option}}" />
+<input type="submit" value="Export To Excel" class="button blue" />
+</form>
+</td>
+</tr>
+</table>
+</div>
+</body>
+</html>

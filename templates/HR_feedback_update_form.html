@@ -1,0 +1,50 @@
+{% include "header.html" %}
+<html>
+<head>
+<script type="text/javascript" src="{{MEDIA_URL}}/jquery.js"></script>
+<link rel="stylesheet" href="{{MEDIA_URL}}/style.css" type="text/css">
+</head>
+<body bgcolor="#94AECE">
+<div id="maincontent">
+<div align="center"><font style="bold" size=5><u>Update Feedback</u></font>
+<form method="POST" action="/recruit/hr_feedback_updated/">
+{% if all_feedback %}
+{% if all_feedback.level1_feedback %}
+	<textarea name="feedback1" cols="30">{{all_feedback.level1_feedback}}</textarea><br><br>
+{% else %}
+<input type="hidden" name="feedback1" value="">
+{% endif %}
+
+{% if all_feedback.level2_feedback %}	
+	<textarea name="feedback2" cols="30">{{all_feedback.level2_feedback}}</textarea><br><br>
+{% else %}
+<input type="hidden" name="feedback2" value="">
+{% endif %}
+
+{% if all_feedback.level3_feedback %}	
+	<textarea name="feedback3" cols="30">{{all_feedback.level3_feedback}}</textarea><br><br>
+{% else %}
+<input type="hidden" name="feedback3" value="">
+{% endif %}
+
+{% if all_feedback.level4_feedback %}	
+	<textarea name="feedback4" cols="30">{{all_feedback.level4_feedback}}</textarea><br><br>
+{% else %}
+<input type="hidden" name="feedback4" value="">
+{% endif %}
+<input type="hidden" name="candidate_id" value="{{candidate_id}}">
+<input type="submit" value="Update" class="button blue">
+
+{% else %}
+
+<font color="blue" size=5>No feedback is available for the candidate.</font><br><br>
+
+{% endif %}
+
+<button class="button blue" type="button" onclick="window.location='/recruit/recruit_index/'">Back
+</button>
+
+</form>
+</div>
+</body>
+</html>

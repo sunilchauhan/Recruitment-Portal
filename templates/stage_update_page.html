@@ -1,0 +1,51 @@
+{% include "base.html" %}
+<html>
+<head>
+<script type="text/javascript">
+$(document).ready(function(){
+$("#stage").change(function(){
+var selectVal = $('#stage :selected').val();
+$("#stage_value_textbox").val(selectVal);
+});
+});
+</script>
+</head>
+<body>
+<div id="maincontent">
+<table border="1">
+<tr>
+<th>
+Candidate Name
+</th>
+<th>
+Stage
+</th>
+</tr>
+{% if db_result %}
+<tr>
+<td>
+{{db_result.first_name}} {{db_result.last_name}}
+</td>
+<td>
+<select name="stage" id="stage">
+<option name="First Round" name="First Round">First Round</option>
+<option name="Second Round" name="Second Round">Second Round</option>
+<option name="HR Round" name="HR Round">HR Round</option>
+<option name="US Round" name="US Round">US Round</option>
+</select>
+</td>
+</tr>
+{% endif %}
+</table>
+<table><tr>
+<td>
+<form method="POST" action="/recruit/update_stage_done/"><input type="hidden" value="{{db_result.id}}" name="candidate_id" />
+<input type="hidden" name="stage_value" id="stage_value_textbox">
+<input type="submit" value="Update Stage" class="button blue" ></form></td>
+<td>
+<form method="POST" action="/recruit/interview_main_page/"><input type="submit" value="Back" class="button blue"></form>
+</td>
+</tr>
+</body>
+</div>
+</html>

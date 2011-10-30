@@ -1,0 +1,52 @@
+{% include "base.html" %}
+<html>
+<head>
+<script type="text/javascript">
+$(document).ready(function(){
+$("#status").change(function(){
+var selectVal = $('#status :selected').val();
+$("#status_value_textbox").val(selectVal);
+});
+});
+</script>
+</head>
+<body>
+<div id="maincontent">
+<table border="1">
+<tr>
+<th>
+Candidate Name
+</th>
+<th>
+status
+</th>
+</tr>
+{% if db_result %}
+<tr>
+<td>
+{{db_result.first_name}} {{db_result.last_name}}
+</td>
+<td>
+<select name="status" id="status">
+<option name="Offer To Be Rolled" value="Offer To Be Rolled">Offer To Be Rolled</option>
+<option name="Offered" value="Offered">Offered</option>
+<option name="Offer Accepted" value="Offer Accepted">Offer Accepted</option>
+<option name="Offer Rejected" value="Offer Rejected">Offer Rejected</option>
+<option name="On Board" value="On Board">On Board</option>
+</select>
+</td>
+</tr>
+{% endif %}
+</table>
+<table><tr>
+<td>
+<form method="POST" action="/recruit/update_status_done/"><input type="hidden" value="{{db_result.id}}" name="candidate_id" />
+<input type="hidden" name="status_value" id="status_value_textbox">
+<input type="submit" value="Update status" class="button blue" ></form></td>
+<td>
+<form method="POST" action="/recruit/status_main_page/"><input type="submit" value="Back" class="button blue"></form>
+</td>
+</tr>
+</div>
+</body>
+</html>

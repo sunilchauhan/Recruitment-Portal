@@ -1,0 +1,1017 @@
+{% include "header.html" %}
+<html>
+<title>
+HR Portal
+</title>
+<head>
+
+<link rel="stylesheet" href="{{MEDIA_URL}}/style.css" type="text/css">
+<script type="text/javascript" src="{{MEDIA_URL}}/jquery.js"></script>
+<link rel="stylesheet" href="{{MEDIA_URL}}/themes/base/jquery.ui.all.css">
+<script src="{{MEDIA_URL}}/ui/jquery.ui.core.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.widget.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.tabs.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.datepicker.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.dialog.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.effects.core.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.button.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.draggable.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.position.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.resizable.js"></script>
+<script src="{{MEDIA_URL}}/ui/jquery.ui.mouse.js"></script>
+<script src="{{MEDIA_URL}}/external/jquery.bgiframe-2.1.2.js"></script>
+<!----For Tabletools--->
+<script type="text/javascript" language="javascript" src="{{MEDIA_URL}}/jquery.dataTables.js"></script>
+<link rel="stylesheet" href="{{MEDIA_URL}}/demo_page.css" type="text/css">
+<link rel="stylesheet" href="{{MEDIA_URL}}/demo_table.css" type="text/css">
+<link rel="stylesheet" href="{{MEDIA_URL}}/TableTools/media/css/TableTools.css" type="text/css">
+<script type="text/javascript" charset="utf-8" src="{{MEDIA_URL}}/ZeroClipboard.js"></script>
+<script type="text/javascript" charset="utf-8" src="{{MEDIA_URL}}/TableTools.js"></script>
+
+<script src="{{MEDIA_URL}}/jquery.hoverIntent.js" type="text/javascript"></script>
+<script src="{{MEDIA_URL}}/jquery.cluetip.js" type="text/javascript"></script>
+<link rel="stylesheet" href="{{MEDIA_URL}}/jquery.cluetip.css" type="text/css" />
+<script src="{{MEDIA_URL}}/jquery.bgiframe.min.js" type="text/javascript"></script>
+<script src="{{MEDIA_URL}}/expander.js" type="text/javascript"></script>
+
+
+
+
+<!--------------------------------------------------------------------------------------->
+
+<style>
+#tableId3th{
+padding-left: .1em;
+padding-right: .1em;
+border-left: 1px solid #dbddff;
+border-right: 1px solid #dbddff;
+border-bottom: 1px solid #dbddff;
+font-weight:normal;
+font-size:1em;
+text-align: center;
+background: #66a9bd;
+}
+</style>
+
+
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+$('.show_link').click(function(){
+$('#show_feedback_lightbox').html();
+var mythis=$(this);
+var candidate_record=$(this).attr('id').toString().split("|");
+var candidate_id=candidate_record[0];
+var candidate_name=candidate_record[1];
+
+var level=$("#HR"+candidate_id).children("input").val();
+
+$.getJSON("/recruit/viewable_feedback/",{level:level,candidate_id:candidate_id},function(user_feedback){
+$('#show_feedback_lightbox').html(user_feedback);
+
+
+$('#show_feedback_lightbox').dialog({
+
+			model:true,
+			height: 250,
+			width: 350,
+			autoOpen:false,
+			title:"Candidate Feedback",
+			close: function(event, ui){ 
+        		location.reload(true); 
+    		}
+			
+});
+
+});
+
+});
+
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+$.ajaxSetup ({
+    // Disable caching of AJAX responses
+    cache: false
+});
+
+
+$('.show_link').mouseover(function(){
+$('#cluetip-inner').empty();
+
+var mythis=$(this);
+var candidate_record=$(this).attr('id').toString().split("|");
+var candidate_id=candidate_record[0];
+var candidate_name=candidate_record[1];
+
+var level=$("#HR"+candidate_id).children("input").val();
+
+
+$('.show_link').cluetip({
+waitimage:true,
+ mouseOutClose:true,
+ tracking:true,
+ ajaxSettings : {
+      type : "GET",
+      data : "level="+level+"&candidate_id="+candidate_id
+    },
+    ajaxProcess : function (user_feedback) {
+    user_feedback=user_feedback.replace(/^"|"$/g,"");
+ 	return user_feedback;
+    },
+    onShow : function (ct, c) {
+    $("#cluetip-title").prepend("Candidate:&nbsp;"+candidate_name);
+     $(candidate_name).remove(".title");
+    }
+    
+});
+
+  });
+  });
+
+ </script>
+ 
+ 
+ <script type="text/javascript">
+  $(document).ready(function(){
+
+   $( "#dialog:ui-dialog" ).dialog( "destroy" );
+  
+   $(".enter_feedback").click(function() {
+       
+       var candidate_id=$(this).attr('id');
+      	$('#current_candidate').val(candidate_id);
+          $("#feedback").dialog({model:true,
+			height: 250,
+			width: 350,
+			autoOpen:false,
+			title:"Candidate Feedback",
+			Buttons:{
+			'Submit': function() {
+			 $("#myform").submit();
+			 $(this).dialog('close');
+             /* submit = true;
+              submitForm();*/
+			  return true;
+			}
+			},
+			
+			close: function(event, ui){ 
+        		location.reload(true); 
+    		}/*This is for close function*/
+			
+			
+          
+          }); /*This is for dialog*/
+           $("#feedback").bind( "submit", function() {
+   					var candidate_feedback=$('#candidate_feedback').val();
+					if (candidate_feedback==null || candidate_feedback=="")
+  			 		{
+  						alert("Feedback field is empty.");
+  						return false;
+  					}
+           });
+        
+          return false;
+        });/* this is for click*/
+        
+   
+         
+
+    });/* this is for docuumen ready */
+
+   </script>
+   
+ 
+ 
+   
+   
+<!---For entering feedback show this popup--->
+<script type="text/javascript">
+function show_popup(){
+ $("#feedback").dialog('open');
+}
+</script>
+
+<!---For showing feedback show this popup--->
+<script type="text/javascript">
+function show_feedback_popup(){
+ $("#show_feedback_lightbox").dialog('open');
+}
+</script>
+
+<!--- Disablink the Enter Feedback button once there exist feedback for the user --->
+<script type="text/javascript">
+ 
+$(document).ready(function(){
+
+
+$.ajaxSetup ({
+    // Disable caching of AJAX responses
+    cache: false
+});
+
+
+
+$('.enter_feedback').each(function(){
+
+var candidate_id=$(this).attr('id');
+var level=$("#HR"+candidate_id).children("input").val();
+
+
+$.getJSON("/recruit/check_feedback/",{level:level,candidate_id:candidate_id},function(status){
+if(status==1){
+$("#"+candidate_id).prop("disabled", true);
+
+}/*If ends here*/
+});/*Json ends here*/
+});/* enter feedback loop ends here*/
+});
+
+
+</script>
+
+ 
+
+<script>
+$(document).ready(function(){
+	$("#tabs").tabs({
+		"show": function(event, ui) {
+			var oTable = $('div.dataTables_scrollBody>table.display', ui.panel).dataTable();
+			if ( oTable.length > 0 ) {
+				oTable.fnAdjustColumnSizing();
+			}
+			ttInstances = TableTools.fnGetMasters();
+			for (i in ttInstances) {
+			if (ttInstances[i].that.fnResizeRequired()) ttInstances[i].that.fnResizeButtons();
+				}
+		}
+	} );
+	});
+</script>
+
+<script type="text/javascript" charset="utf-8">
+			$(document).ready( function () {
+				$('#tableId').dataTable( {
+					"sDom": '<"H"lfrT>t',
+					"oTableTools": {
+									"sSwfPath": "{{MEDIA_URL}}/copy_cvs_xls_pdf.swf"
+									
+		}
+				} );
+				
+				
+				
+			$('#tableId2').dataTable( {
+					"sDom": '<"H"lfrT>t',
+					"oTableTools": {
+									"sSwfPath": "{{MEDIA_URL}}/copy_cvs_xls_pdf.swf"
+									
+		}
+				} );
+				
+				$('#tableId3').dataTable( {
+					"sDom": '<"H"lfr>t'
+					
+				
+				} );
+			} );
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+ var oTable=$("#tableId").dataTable(
+ {
+						"bPaginate": true,
+                        "bLengthChange": true,
+                        "bJQueryUI": true,
+                        "bFilter": true,
+                        "bSort": true,
+                        "bInfo": true,
+                        "bRetrieve":true,
+                        "bAutoWidth": true,
+                     	"aoColumns": [
+                                null,
+								null,
+								null,
+								null,
+								null,
+								null,
+								null,
+								null,
+								null,
+								null,
+								null,
+								null,
+								null,
+								null,
+								null,
+								null,
+								null,
+								null,
+								null,
+								null,
+								null,
+								null,
+								null,
+								null
+                    			]
+ });
+ 
+ var asInitVals = new Array();
+$("tfoot input").keyup( function () {
+		oTable.fnFilter( this.value, oTable.oApi._fnVisibleToColumnIndex( 
+			oTable.fnSettings(), $("tfoot input").index(this) ));
+	} );
+	
+	
+	
+	/*
+	 * Support functions to provide a little bit of 'user friendlyness' to the textboxes in 
+	 * the footer
+	 */
+	$("tfoot input").each( function (i) {
+		asInitVals[i] = this.value;
+	} );
+	
+	$("tfoot input").focus( function () {
+		if ( this.className == "search_init" )
+		{
+			this.className = "";
+			this.value = "";
+		}
+	} );
+	
+	$("tfoot input").blur( function (i) {
+		if ( this.value == "" )
+		{
+			this.className = "search_init";
+			this.value = asInitVals[$("tfoot input").index(this)];
+		}
+	} );
+ });
+                    			         
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+ var oTable2=$("#tableId2").dataTable(
+ {
+						"bPaginate": true,
+                        "bLengthChange": true,
+                        "bJQueryUI": true,
+                        "bFilter": true,
+                        "bSort": true,
+                        "bInfo": true,
+                        "bRetrieve":true,
+                        "bAutoWidth": true,
+                     	"aoColumns": [
+                                null,
+								null,
+								null,
+								null,
+								null,
+								null,
+								null,
+								null,
+								null,
+								null,
+								null,
+								null,
+								null,
+								null,
+								null,
+								null
+								
+                    			]
+ });
+ 
+ var asInitVals = new Array();
+$("tfoot input").keyup( function () {
+		oTable2.fnFilter( this.value, oTable2.oApi._fnVisibleToColumnIndex( 
+			oTable2.fnSettings(), $("tfoot input").index(this) ));
+	} );
+	
+	
+	
+	/*
+	 * Support functions to provide a little bit of 'user friendlyness' to the textboxes in 
+	 * the footer
+	 */
+	$("tfoot input").each( function (i) {
+		asInitVals[i] = this.value;
+	} );
+	
+	$("tfoot input").focus( function () {
+		if ( this.className == "search_init" )
+		{
+			this.className = "";
+			this.value = "";
+		}
+	} );
+	
+	$("tfoot input").blur( function (i) {
+		if ( this.value == "" )
+		{
+			this.className = "search_init";
+			this.value = asInitVals[$("tfoot input").index(this)];
+		}
+	} );
+	
+ });
+                    			         
+</script>
+
+<script>
+$(document).ready(function(){
+var oTable3=$("#tableId3").dataTable(
+ {
+ 						"bPaginate": true,
+                        "bLengthChange": true,
+                        "bJQueryUI": true,
+                        "bFilter": true,
+                        "bSort": true,
+                        "bInfo": true,
+                        "bRetrieve":true,
+                        "bAutoWidth": true,
+                       	"aoColumns": [
+                               null,
+								null,
+								null,
+								null,
+								null,
+								null
+								
+								]
+ });
+ 
+ 
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+$("input:checkbox:not(:checked)").each(function() {
+	var my=$(this).attr("name");
+    var column = $("#tableId ."+my);
+    $(column).hide();
+});
+
+$("input:checkbox").click(function(){
+	var my=$(this).attr("name");
+    var column = $("#tableId ."+my);
+    $(column).toggle();
+});
+});
+</script>
+
+<script>
+$(document).ready(function(){
+$('#Manage_columns').click(function(){
+$('#column_table').toggle();
+});
+});
+</script>
+
+</head>
+
+<body bgcolor="#94AECE">
+
+
+
+<div id="show_feedback_lightbox" style="display:None;background-color:#94AECE"></div>
+
+<div align="right">
+<a href="/home/">BACK</a>
+<a href="/logout/">LOGOUT</a>
+</div>
+
+
+<div id="tabs">
+
+	<ul>
+		<li><a href="#tabs-1">Candidate Details</a></li>
+		<li><a href="#tabs-2">Job Details</a></li>
+	</ul>
+
+<div id="tabs-1">
+
+{% ifequal department 'HR' %}
+
+<table border="1" id="column_table" style="display:None;;background-color:#94AECE"><tr>
+<td><input type="checkbox" name="first_name" checked="checked" />Name</td>
+<td><input type="checkbox" name="email_address" checked="checked" />Email Address</td>
+<td><input type="checkbox" name="contact_number" checked="checked" />Contact Number</td>
+<td><input type="checkbox" name="skill_set" checked="checked" />Skill Set</td>
+<td><input type="checkbox" name="stage" checked="checked" />Stage</td>
+<td><input type="checkbox" name="status" checked="checked" />Status</td>
+<td><input type="checkbox" name="feedback" checked="checked" />Feedback</td>
+<td><input type="checkbox" name="interviewer" checked="checked" />Interviewer</td>
+<td><input type="checkbox" name="applied_for" checked="checked" />Applied For</td>
+<td><input type="checkbox" name="contact_address" />Contact Address</td>
+<td><input type="checkbox" name="validity" />Validity</td>
+<td><input type="checkbox" name="resume" checked="checked" />Resume</td>
+<td><input type="checkbox" name="passport_number"/>Passport Number</td>
+<td><input type="checkbox" name="work_experience" checked="checked" />Work Experience</td>
+<td><input type="checkbox" name="current_ctc" />Current CTC</td>
+<td><input type="checkbox" name="expected_ctc" />Expected CTC</td>
+<td><input type="checkbox" name="qualification" checked="checked" />Qualification</td>
+<td><input type="checkbox" name="special_achievements" />Special Achievement</td>
+<td><input type="checkbox" name="reference_type" />Reference Type</td>
+<td><input type="checkbox" name="referral_name"/>Referral Name</td>
+<td><input type="checkbox" name="hr_person" checked="checked" />HR Person</td>
+</tr>
+</table> 
+
+<form method="POST" action="/recruit/add_candidate/" class="search_form">
+<input type="submit" value="Add Candidate">&nbsp;
+<a href="javascript:void(0);" id="Manage_columns">Manage Columns</a>
+</form>
+
+
+<table border="1" id="tableId" class="mytable">
+<thead>
+<tr>
+
+<th class="first_name">
+Name
+</th>
+
+<th class="email_address">
+Email Address
+</th>
+
+<th class="contact_number">
+Contact Number
+</th>
+
+<th class="skill_set">
+Skill Set
+</th>
+
+
+<th class="stage">
+Stage
+</th>
+
+<th class="status">
+Status
+</th>
+
+<th class="feedback">
+Feedback
+</th>
+
+<th class="interviewer">
+Interviewer
+</th>
+
+
+<th class="applied_for">
+Applied For
+</th>
+
+<th class="contact_address">
+Contact Address
+</th>
+
+<th class="validity">
+Validity
+</th>
+
+<th class="resume">
+Resume
+</th>
+
+
+<th class="passport_number">
+Passport Number
+</th>
+
+<th class="work_experience">
+Total Work Experience
+</th>
+
+<th class="current_ctc">
+Current CTC<br>(in lacs/annum)
+</th>
+
+<th class="expected_ctc">
+Expected CTC<br>(in lacs/annum)
+</th>
+
+<th class="qualification">
+Qualification
+</th>
+
+<th class="special_achievements">
+Special Achievements
+</th>
+
+
+<th class="reference_type">
+Reference Type
+</th>
+
+<th class="referral_name">
+Referral Name
+</th>
+
+<th class="hr_person">
+HR Person
+</th>
+
+<th>
+</th>
+
+<th>
+</th>
+
+<th>
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+{% for candidate_record in candidate_result %}
+<tr>
+
+<td class="first_name">{{candidate_record.first_name}} {{candidate_record.last_name}}</td>
+
+<td class="email_address">{{candidate_record.email_address}}</td>
+
+<td class="contact_number">{{candidate_record.contact_number}}</td>
+
+<td class="skill_set">{{candidate_record.skill_set}}</td>
+
+<td class="stage">{{candidate_record.stage}}</td>
+
+<td class="status">{{candidate_record.status}}</td>
+
+<td id="HR{{candidate_record.id}}">
+<a href="" class="show_link" id="{{candidate_record.id}}|{{candidate_record.first_name}}&nbsp;{{candidate_record.last_name}}|title" rel="/recruit/viewable_feedback/">Show Feedback</a>
+<input type="hidden" name="level" value="4" id="level_id">
+<!---
+{% ifequal user_request.user|stringformat:"s" candidate_record.level1_interviewer %}
+<input type="hidden" name="level" value="1" id="level_id">
+{% endifequal %}
+{% ifequal user_request.user|stringformat:"s" candidate_record.level2_interviewer %}
+<input type="hidden" name="level" value="2" id="level_id">
+{% endifequal %}
+{% ifequal user_request.user|stringformat:"s" candidate_record.level3_interviewer %}
+<input type="hidden" name="level" value="3" id="level_id">
+{% endifequal %}
+{% ifequal user_request.user|stringformat:"s" candidate_record.level4_interviewer %}
+<input type="hidden" name="level" value="4" id="level_id">
+{% endifequal %}--->
+</td>
+
+<td class="skill_set">
+{{candidate_record.level1_interviewer}},&nbsp;
+{{candidate_record.level2_interviewer}}, &nbsp;
+{{candidate_record.level3_interviewer}} and &nbsp;
+{{candidate_record.level4_interviewer}}
+</td>
+
+
+<td class="applied_for">{{candidate_record.applied_for}}</td>
+
+<td class="contact_address">{{candidate_record.contact_address}}</td>
+
+<td class="validity">{{candidate_record.validity}}</td>
+
+<td class="resume">
+<a href="{{MEDIA_URL}}{{candidate_record.resume}}">Download</a>
+</td>
+
+<td class="passport_number">{{candidate_record.passport_number}}</td>
+
+<td class="work_experience">{{candidate_record.work_experience_years}} 
+Years {{candidate_record.work_experience_months}} Months
+</td>
+
+<td class="current_ctc">{{candidate_record.current_ctc}}</td>
+
+<td class="expected_ctc">{{candidate_record.expected_ctc}}</td>
+
+<td class="qualification">{{candidate_record.qualification}}<br>From {{candidate_record.institute_name}}
+<br>In year {{candidate_record.year_of_passing}}<br> with {{candidate_record.percentage}}%</td>
+
+<td class="special_achievements">{{candidate_record.special_achievement}}</td>
+
+<td class="reference_type">{{candidate_record.reference_type}}</td>
+
+<td class="referral_name">{{candidate_record.referral_name}}</td>
+
+
+<td class="hr_name">{{candidate_record.hr_name}}</td>
+
+{% ifequal user_request.user|stringformat:"s" candidate_record.hr_name %}
+
+
+<td>
+<a href="/recruit/update_candidate_detail/?candidate_id={{candidate_record.id}}">Update Details</a>
+</td>
+<td>
+<a href="/recruit/update_resume/?candidate_id={{candidate_record.id}}">Update Resume</a>
+</td>
+<td>
+<a href="/recruit/hr_feedback_update/?candidate_id={{candidate_record.id}}">Update Feedback</a>
+</td>	
+{% else %}
+
+{% if user_request.user.is_superuser %} 
+
+
+<td>
+<a href="/recruit/update_candidate_detail/?candidate_id={{candidate_record.id}}">Update Details</a>
+</td>
+<td>
+<a href="/recruit/update_resume/?candidate_id={{candidate_record.id}}">Update Resume</a>
+</td>
+<td>
+<a href="/recruit/HR_feedback_update/?candidate_id={{candidate_record.id}}">Update Feedback</a>
+</td>
+{% else %}
+<td></td>
+<td></td>
+<td></td>
+{% endif %}
+{% endifequal %}
+
+</tr>
+{% endfor %}
+</tbody>
+
+<tfoot> 
+                       <tr> 
+						<th><input type="text" name="search_first_name" value="Search First Name" class="search_init" /></th>
+						<th><input type="text" name="search_email" value="Search Email" class="search_init" /></th>
+						<th><input type="text" name="search_contact_number" value="Search Contact Number" class="search_init" /></th>
+						<th><input type="text" name="search_skill_set" value="Search Skill Set" class="search_init" /></th>
+                       </tr>
+ </tfoot>
+ </table>
+
+ 
+ {% else %}
+
+ <table border="1" id="tableId3" class="mytable">
+<thead>
+<tr>
+
+<th>
+<font color="black">
+Name
+</font>
+</th>
+
+
+<th>
+<font color="black">
+Resume
+</font>
+</th>
+
+<th>
+<font color="black">
+Email Address
+</font>
+</th>
+
+
+<th>
+<font color="black">
+Contact Number
+</font>
+</th>
+
+<th>
+<font color="black">
+Show Feedback
+</font>
+</th>
+
+<th>
+<font color="black">
+Enter Feedback
+</font>
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+{% for candidate_record in candidate_result %}
+<tr>
+
+<td>{{candidate_record.first_name}} {{candidate_record.last_name}}</td>
+
+<td>
+<a href="{{MEDIA_URL}}{{candidate_record.resume}}">Download</a>
+</td>
+
+<td>{{candidate_record.email_address}}</td>
+
+<td >{{candidate_record.contact_number}}</td>
+
+<td id="HR{{candidate_record.id}}">
+<a href="" class="show_link" id="{{candidate_record.id}}|{{candidate_record.first_name}}&nbsp;{{candidate_record.last_name}}|title" rel="/recruit/viewable_feedback/"
+onClick="show_feedback_popup()"
+>
+Show Feedback</a>
+
+{% ifequal user_request.user|stringformat:"s" candidate_record.level1_interviewer %}
+<input type="hidden" name="level" value="1" id="level_id">
+{% endifequal %}
+{% ifequal user_request.user|stringformat:"s" candidate_record.level2_interviewer %}
+<input type="hidden" name="level" value="2" id="level_id">
+{% endifequal %}
+{% ifequal user_request.user|stringformat:"s" candidate_record.level3_interviewer %}
+<input type="hidden" name="level" value="3" id="level_id">
+{% endifequal %}
+{% ifequal user_request.user|stringformat:"s" candidate_record.level4_interviewer %}
+<input type="hidden" name="level" value="4" id="level_id">
+{% endifequal %}
+
+</td>
+
+
+
+<td>
+
+<form method="POST" action="" id="mainpageform">
+<input type="hidden" name="candidate_id" class="candidate_id" value="{{candidate_record.id}}">
+
+<input type="hidden" name="candidate_name" class="candidate_name" value="{{candidate_record.first_name}}&nbsp;{{candidate_record.last_name}}">
+
+<input type="submit" value="Enter Feedback" class="enter_feedback" id="{{candidate_record.id}}" onClick="show_popup()" >
+</form>
+
+
+
+
+<div id="feedback" style="display:none;background-color:#94AECE;" align="center">
+<form method="POST" action="/recruit/feedback_updated/" id="myform">
+<input type="hidden" name="candidate_id" id="current_candidate">
+<textarea name="candidate_feedback" cols="30" id="candidate_feedback"></textarea><br><br>
+<input type="submit" value="Submit" class="button blue">
+</form>
+</div>
+</div>
+ 
+</td>
+
+</tr>
+{% endfor %}
+</tbody>
+
+</table>
+
+ {% endifequal %}
+
+</div>
+
+
+<div id="tabs-2">
+
+
+{% ifequal department 'HR' %}
+<form method="POST" action="/recruit/add_job/" class="search_form">
+<input type="submit" value="Add Job">
+</form>
+
+{%if job_result %}
+<table border="1" id="tableId2" class="mytable">
+<thead >
+<tr>
+
+<th>
+Job Title
+</th>
+
+<th>
+Department
+</th>
+
+<th>
+Number Of Positions
+</th>
+
+<th>
+Skill Set
+</th>
+
+<th>
+Opening Status
+</th>
+
+<th>
+Location
+</th>
+
+<th>
+Post Opened
+</th>
+
+<th>
+Closing Date
+</th>
+
+<th>
+Designation
+</th>
+
+<th>
+Roles and Responsibilities
+</th>
+
+
+
+<th>
+Job Type
+</th>
+
+
+<th>
+Country
+</th>
+
+
+<th>
+Min Work Experience
+</th>
+
+<th>
+Max Work Experience
+</th>
+
+<th>
+Validity
+</th>
+<th>
+</th>
+
+</tr>
+</thead>
+<tbody>
+{% for job_record in job_result %}
+<tr>
+<td>{{job_record.job_title}}</td>
+<td>{{job_record.department}}</td>
+<td>{{job_record.number_of_positions}}</td>
+<td>{{job_record.skill_set}}</td>
+<td>{{job_record.job_opening_status}}</td>
+<td>{{job_record.location_name}}</td>
+<td>{{job_record.opening_date}}</td>
+<td>{{job_record.closing_date}}</td>
+<td>{{job_record.designation}}</td>
+<td>{{job_record.roles_and_responsibilities}}</td>
+<td>{{job_record.job_type}}</td>
+<td>{{job_record.country}}</td>
+<td>{{job_record.min_experience}}</td>
+<td>{{job_record.max_experience}}</td>
+<td>{{job_record.validity}}</td>
+<td><form method="POST" action="/recruit/update_job/">
+<input type="hidden" name="job_id" value="{{job_record.id}}" />
+<input type="submit" value="Update" /></form>
+</td>	
+</tr>
+{% endfor %}
+</tbody>
+<!---
+<tfoot> 
+                       <tr> 
+						<th><input type="text" name="search_job_title" value="Search Job Title" class="search_init" /></th>
+						<th><input type="text" name="search_department" value="Search Department" class="search_init" /></th>
+						<th><input type="text" name="search_positions" value="Search Positions" class="search_init" /></th>
+						<th><input type="text" name="search_skill_set" value="Search Skill Set" class="search_init" /></th> 
+						<th><input type="text" name="search_opening_status" value="Search Opening Status" class="search_init" style="width:80%;height:100%" /></th>
+						<th><input type="text" name="search_location" value="Search Location" class="search_init" /></th>
+                       </tr>
+ </tfoot>--->
+</table>
+{% else %}
+<font color="blue" size="4">No Job available.</font>
+{% endif %}
+
+{% else %}
+<font color="blue" size="4">For current job opening contact HR team. Thank You</font>
+{% endifequal %}
+</div>
+
+</div>
+ 
+</body>
+</html>
